@@ -1,7 +1,7 @@
 FROM php:8.1-fpm AS base
 
 # File Author / Maintainer
-LABEL maintainer="Frank Geyer<support@escait.de>"
+LABEL maintainer="Frank Geyer<developer@escait.de>"
 
 # Use arguments from docker-compose.yml
 ARG XDEBUG
