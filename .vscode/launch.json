@@ -1,0 +1,35 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Listen in WSL2 for XDebug on Docker",
+            "type": "php",
+            "request": "launch",
+            "port": 9003,
+            "hostname": "0.0.0.0",
+            "log": true,
+            "stopOnEntry": true,
+            "pathMappings": {
+                "/app": "${workspaceFolder}"
+            },
+            "ignore": [
+                "**/vendor/**/*.php"
+            ]
+        },
+        {
+            "name": "Listen for XDebug on Docker",
+            "type": "php",
+            "request": "launch",
+            "port": 9003,
+            "hostname": "localhost",
+            "log": true,
+            "stopOnEntry": true,
+            "pathMappings": {
+                "/app": "${workspaceFolder}"
+            },
+            "ignore": [
+                "**/vendor/**/*.php"
+            ]
+        },
+    ]
+}

@@ -1,0 +1,51 @@
+version: '3.9'
+
+services:
+  php:
+    image: escait/php8.1
+    build:
+      context: ./
+      dockerfile: PHP.Dockerfile
+      args:
+        XDEBUG: '${XDEBUG:-false}'
+        XDEBUG_CLIENT_HOST: '${XDEBUG_CLIENT_HOST:-host.docker.internal}'
+        XDEBUG_PORT: '${XDEBUG_PORT:-9003}'
+        XDEBUG_IDEKEY: '${XDEBUG_IDEKEY:-docker}'
+    depends_on:
+      - mysql
+    volumes:
+      - ./:/app
+    networks:
+      - escait
+    extra_hosts:
+      - host.docker. internal:host-gateway
+  mysql: 
+    image: mysql:8.0
+    environment:
+      MYSQL_DATABASE: '${MYSQL_DATABASE:-escait_php_db}'
+      MYSQL_USER: '${MYSQL_USER:-escait}'
+      MYSQL_ROOT_PASSWORD: '${MYSQL_ROOT_PASSWORD:-not-secret}'
+      MYSQL_PASSWORD: '${MYSQL_PASSWORD:-not-secret}'
+      MYSQL_ALLOW_EMPTY_PASSWORD: '${MYSQL_ALLOW_EMPTY_PASSWORD:-false}'
+    volumes:
+      - escait_php_db:/var/lib/mysql
+    networks:
+      - escait
+    ports: 
+      - "${MYSQL_EXTERNAL_PORT:-3306}:3306"
+    healthcheck:
+            test: [
+              "CMD",
+              "mysqladmin",
+              "ping",
+              "-p${MYSQL_ROOT_PASSWORD}"
+            ]
+            retries: 3
+            timeout: 5s
+
+networks:
+  escait:
+    driver: bridge
+
+volumes:
+    escait_php_db: {}
